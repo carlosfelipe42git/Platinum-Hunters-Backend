@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Game, GameProps } from '../../src/models/game';
+import { Game, GameProps } from '../src/models/game';
 
 describe('Game', () => {
   test('creating a game with wrong parameters', () => {

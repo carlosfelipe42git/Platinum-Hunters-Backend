@@ -1,18 +1,22 @@
-import express, { Router, type Request, type Response } from "express"
+import express, { type Request, type Response } from "express"
+import swaggerUi from "swagger-ui-express"
+import doc from "./docs/openapi.js"
+import cors from "cors"
+import libraryRoutes from './routes/library.js'
 
 const app = express()
-
-const route = Router()
-
-app.use(route)
-
 const PORT = 3000
 app.use(express.json())
+app.use(cors())
 
-route.get("/", (req: Request, res: Response) => {
-  res.send("Hello, World!")
+app.use(libraryRoutes)
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(doc))
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, World!')
 })
+
 app.listen(PORT, () => {
   console.log(`Server running: http://localhost:${PORT}`)
+  console.log(`Swagger: http://localhost:${PORT}/swagger`)
 })
 
