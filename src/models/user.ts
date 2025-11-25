@@ -1,6 +1,12 @@
 import { ArgumentException } from "../exceptions/argumentException.js";
 import { generateUUID } from "../utils/uuid.js";
 
+export enum UserRole {
+    USER = "USER",
+    ADMIN = "ADMIN",
+    MOD = "MOD"
+}
+
 export interface UserProps {
     username : string;
     email : string;
@@ -12,7 +18,7 @@ export class User {
     private _updatedAt? : Date;
     private _id: string;
     private _props: UserProps;
-
+    private _roles: UserRole[];
     constructor(props: UserProps){
         if(!props.username || !props.email || !props.passwordHash){
             throw new ArgumentException("Invalid user properties");
@@ -21,6 +27,7 @@ export class User {
         this._updatedAt = new Date();
         this._id = generateUUID();
         this._props = { ...props };
+        this._roles = [UserRole.USER];
     }
 
     get username(){
@@ -33,6 +40,10 @@ export class User {
 
     get profileImageUrl(){
         return this._props.profileImageUrl;
+    }
+
+    get roles(){
+        return this._roles;
     }
 
     get id(){
@@ -53,6 +64,7 @@ export class User {
             email: this._props.email,
             passwordHash: this._props.passwordHash,
             profileImageUrl: this._props.profileImageUrl,
+            roles: this._roles,
             createdAt: this._createdAt,
             updatedAt: this._updatedAt,
         };
