@@ -26,8 +26,8 @@ export const getGamesService = async (input: GetGamesInput) => {
 
   // 2. Filtros do Body (do POST /games/filters)
   if (filters.genres && filters.genres.length > 0) {
-    // $all garante que o jogo tenha TODOS os gêneros da lista
-    filterQuery.genres = { $all: filters.genres };
+    // $in garante que o jogo tenha QUALQUER um dos gêneros da lista
+    filterQuery.genres = { $in: filters.genres };
   }
   if (filters.plataformas && filters.plataformas.length > 0) {
     // $in garante que o jogo esteja em QUALQUER uma das plataformas
