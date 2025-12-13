@@ -7,6 +7,7 @@ extendZodWithOpenApi(z);
 const statusEnum = z.enum([
   LibraryItemStatus.PLAYING,
   LibraryItemStatus.COMPLETED,
+  LibraryItemStatus.PLATINUM,
   LibraryItemStatus.ABANDONED,
   LibraryItemStatus.WISHLIST
 ]);

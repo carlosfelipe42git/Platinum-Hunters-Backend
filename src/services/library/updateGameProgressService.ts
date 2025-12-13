@@ -25,6 +25,17 @@ export const updateGameProgressService = async (input: UpdateProgressInput) => {
   if (hoursPlayed !== undefined) libraryItem.hoursPlayed = hoursPlayed;
   if (status !== undefined) libraryItem.status = status;
 
+  // Lógica automática: se progresso chegar a 100% ou platinum for true, muda para PLATINUM
+  if ((libraryItem.progress === 100 || libraryItem.platinum === true) && 
+      libraryItem.status !== LibraryItemStatus.PLATINUM) {
+    libraryItem.status = LibraryItemStatus.PLATINUM;
+  }
+
+  // Lógica automática: se status for PLATINUM, progresso vai para 100%
+  if (libraryItem.status === LibraryItemStatus.PLATINUM && libraryItem.progress !== 100) {
+    libraryItem.progress = 100;
+  }
+
   await libraryItem.save();
 
   return {

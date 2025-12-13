@@ -1,6 +1,8 @@
 export enum LibraryItemStatus {
-  PLAYING = 'playing',
-  COMPLETED = 'completed',
-  ABANDONED = 'abandoned',
-  WISHLIST = 'wishlist'
+  PLAYING = 'Jogando',
+  COMPLETED = 'Completado',
+  ABANDONED = 'Abandonado',
+  WISHLIST = 'Lista de Desejos',
+  PLATINUM = 'Platinado'
+
 }
