@@ -90,6 +90,7 @@ src/
 ### Usuários
 - `POST /users/register` - Registrar novo usuário
 - `POST /users/login` - Autenticar usuário
+- `GET /users/me` - Obter perfil e estatísticas do usuário logado
 
 ### Jogos
 - `GET /games` - Listar jogos
