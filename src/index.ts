@@ -8,7 +8,6 @@ import userRoutes from './routes/users.js'
 import gameRoutes from './routes/games.js'; 
 import { connectDB } from './data/database.js'
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js'
-import passport from './middlewares/passportConfig.js';
 import rankingRoutes from './routes/ranking.js'
 import { seedDatabase } from './data/seeder.js'; 
 
@@ -21,7 +20,6 @@ connectDB().then(() => {
 
 app.use(express.json())
 app.use(cors())
-app.use(passport.initialize());
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(doc))
 app.use(userRoutes)
