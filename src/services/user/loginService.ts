@@ -34,6 +34,7 @@ export const loginUserService = async (credentials: LoginUserDto) => {
     username: userDocument.username,
     email: userDocument.email,
     profileImageUrl: userDocument.profileImageUrl,
+    roles: userDocument.roles, // <--- ADICIONADO: Agora o frontend vai saber quem é Admin!
     coins: userDocument.coins || 0,
     rankingPoints: userDocument.rankingPoints || 0,
     completedChallenges: userDocument.completedChallenges || [],
