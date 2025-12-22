@@ -51,16 +51,17 @@ export const seedTitles = async () => {
 
 const runSeed = async () => {
     try {
-        const mongoUri = process.env.MONGODB_URI;
+        const mongoUri = process.env.MONGODB_URI_LOCAL || process.env.MONGODB_URI;
 
         if (!mongoUri) {
-            console.error('❌ MONGODB_URI not found in environment variables');
+            console.error('❌ MONGODB_URI_LOCAL ou MONGODB_URI not found in environment variables');
             process.exit(1);
         }
 
-        console.log('🔌 Connecting to MongoDB...');
+        const isLocal = mongoUri === process.env.MONGODB_URI_LOCAL;
+        console.log(`🔌 Connecting to MongoDB ${isLocal ? 'LOCAL' : 'ATLAS'}...`);
         await mongoose.connect(mongoUri);
-        console.log('✅ Connected to MongoDB');
+        console.log(`✅ Connected to MongoDB ${isLocal ? 'LOCAL' : 'ATLAS'}!`);
 
         await seedTitles();
 

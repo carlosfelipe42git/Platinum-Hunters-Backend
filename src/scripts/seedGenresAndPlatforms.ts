@@ -115,17 +115,19 @@ export const seedGenresAndPlatforms = async () => {
 };
 
 // Executar o script
-const MONGO_URI = process.env.MONGODB_URI;
+const MONGO_URI = process.env.MONGODB_URI_LOCAL || process.env.MONGODB_URI;
 
 if (!MONGO_URI) {
-  console.error('❌ MONGODB_URI is not defined in .env file');
+  console.error('❌ MONGODB_URI_LOCAL ou MONGODB_URI is not defined in .env file');
   process.exit(1);
 }
+
+const isLocal = MONGO_URI === process.env.MONGODB_URI_LOCAL;
 
 mongoose
   .connect(MONGO_URI)
   .then(async () => {
-    console.log('✅ Connected to MongoDB');
+    console.log(`✅ Connected to MongoDB ${isLocal ? 'LOCAL' : 'ATLAS'}!`);
     await seedGenresAndPlatforms();
     await mongoose.connection.close();
     console.log('👋 MongoDB connection closed');

@@ -7,16 +7,17 @@ dotenv.config();
 
 const seedDatabase = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || process.env.DATABASE_URL; 
+    const mongoUri = process.env.MONGODB_URI_LOCAL || process.env.MONGODB_URI || process.env.DATABASE_URL; 
     
     if (!mongoUri) {
-      console.error("❌ Erro: Não encontrei a MONGO_URI no seu .env");
+      console.error("❌ Erro: Não encontrei a MONGODB_URI_LOCAL ou MONGODB_URI no seu .env");
       process.exit(1);
     }
 
-    console.log("🔌 Conectando ao MongoDB...");
+    const isLocal = mongoUri === process.env.MONGODB_URI_LOCAL;
+    console.log(`🔌 Conectando ao MongoDB ${isLocal ? 'LOCAL' : 'ATLAS'}...`);
     await mongoose.connect(mongoUri);
-    console.log("✅ Conectado!");
+    console.log(`✅ Conectado ao MongoDB ${isLocal ? 'LOCAL' : 'ATLAS'}!`);
 
     let totalInserted = 0;
 
