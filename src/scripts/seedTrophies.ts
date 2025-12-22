@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { TrophyDataModel } from '../models/schemas/trophyData.js'; 
-
-// Importa a lista de troféus (INITIAL_TROPHIES)
 import { INITIAL_TROPHIES } from './initialTrophies.js'; 
 
 dotenv.config(); 
@@ -25,22 +23,15 @@ const seedDatabase = async () => {
     console.log("🚀 Iniciando a seed (Modo: Limpar e Recriar)...");
 
     for (const [gameId, list] of Object.entries(INITIAL_TROPHIES)) {
-        
-        // 1. LIMPEZA: Remove apenas os troféus oficiais antigos desse jogo para evitar duplicação ou listas incompletas
-        // (Mantém os 'isCustom: true' que você criou manualmente)
         await TrophyDataModel.deleteMany({ gameId, isCustom: false });
-
-        // 2. PREPARAÇÃO
-        // @ts-ignore
         const trophiesToInsert = list.map((t: any) => ({
             gameId,
             name: t.name,
             description: t.description,
             difficulty: 'bronze',
-            isCustom: false // Garante que sejam marcados como oficiais
+            isCustom: false
         }));
 
-        // 3. INSERÇÃO
         if (trophiesToInsert.length > 0) {
             await TrophyDataModel.insertMany(trophiesToInsert);
             totalInserted += trophiesToInsert.length;
