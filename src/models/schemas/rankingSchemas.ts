@@ -45,7 +45,7 @@ export const completeChallengeSchema = z.object({
 export const buyTitleSchema = z.object({
   body: z.object({
     title: z.string().min(1),
-    cost: z.number().min(0),
+    cost: z.number().min(1),
   }),
 });
 
