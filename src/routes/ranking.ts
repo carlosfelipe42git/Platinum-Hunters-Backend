@@ -51,8 +51,8 @@ route.get('/ranking', async (req: Request, res: Response) => {
             avatar: u.profileImageUrl || "https://i.pravatar.cc/100?img=3",
             rankingPoints: u.rankingPoints || 0,
             equippedTitle: u.equippedTitle,
-            platinums: 0,
-            totalTrophies: 0,
+            platinums: u.platinums || 0,
+            totalTrophies: u.totalTrophies || 0,
             completedChallenges: u.completedChallenges || [] 
         }));
         res.json(formattedUsers);
