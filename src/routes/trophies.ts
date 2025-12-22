@@ -1,12 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
-// --- IMPORTAÇÕES DE SEGURANÇA E VALIDAÇÃO ---
 import { authMiddleware, AuthRequest } from '../middlewares/authMiddleware.js';
-import { authorize } from '../middlewares/authorize.js'; // <--- Middleware de permissão
-import { UserRole } from '../models/user.js'; // <--- Enum com os cargos (ADMIN, USER)
+import { authorize } from '../middlewares/authorize.js';
+import { UserRole } from '../models/user.js';
 import { validate } from '../middlewares/validateSchema.js';
 
-// Importando os Schemas Zod
 import { 
     trackTrophiesSchema, 
     toggleTrophySchema, 
@@ -22,12 +20,6 @@ import { INITIAL_TROPHIES } from '../scripts/initialTrophies.js';
 
 const route = Router();
 
-// ==========================================
-// 🔓 ROTAS PÚBLICAS OU DE USUÁRIO COMUM
-// (Qualquer usuário logado pode acessar)
-// ==========================================
-
-// 1. Pegar progresso
 route.get(
     '/trophies/my-progress',
     authMiddleware,
@@ -64,7 +56,6 @@ route.get(
     }
 );
 
-// 2. Seguir jogo (Track)
 route.post(
     '/trophies/track',
     authMiddleware,
@@ -97,7 +88,6 @@ route.post(
     }
 );
 
-// 3. Marcar/Desmarcar Troféu
 route.post(
     '/trophies/toggle',
     authMiddleware,
@@ -145,7 +135,6 @@ route.post(
     }
 );
 
-// 4. Marcar Todos
 route.post(
     '/trophies/toggle-all',
     authMiddleware,
@@ -187,7 +176,6 @@ route.post(
     }
 );
 
-// 5. Listar Troféus do Jogo (Pública ou autenticada, aqui deixei aberta)
 route.get('/trophies/list/:gameId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { gameId } = req.params;
@@ -198,7 +186,6 @@ route.get('/trophies/list/:gameId', async (req: Request, res: Response, next: Ne
     }
 });
 
-// 6. Resetar Banco (Seed) - CUIDADO: Talvez queira proteger isso como ADMIN também?
 route.post('/trophies/seed-database', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let totalInserted = 0;
@@ -223,16 +210,10 @@ route.post('/trophies/seed-database', async (req: Request, res: Response, next: 
     }
 });
 
-// ==========================================
-// 🔒 ROTAS ADMINISTRATIVAS
-// (Somente quem tem role 'ADMIN' pode acessar)
-// ==========================================
-
-// CREATE (Criar Customizado)
 route.post(
     '/trophies/create',
-    authMiddleware,            // 1. Verifica se está logado
-    authorize(UserRole.ADMIN), // 2. Verifica se é ADMIN
+    authMiddleware,
+    authorize(UserRole.ADMIN),
     validate(createTrophySchema),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -253,11 +234,10 @@ route.post(
     }
 );
 
-// EDIT
 route.put(
     '/trophies/edit/:id',
     authMiddleware,
-    authorize(UserRole.ADMIN), // SOMENTE ADMIN
+    authorize(UserRole.ADMIN),
     validate(editTrophySchema),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -279,11 +259,10 @@ route.put(
     }
 );
 
-// DELETE
 route.delete(
     '/trophies/delete/:id',
     authMiddleware,
-    authorize(UserRole.ADMIN), // SOMENTE ADMIN
+    authorize(UserRole.ADMIN),
     validate(deleteTrophySchema),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
