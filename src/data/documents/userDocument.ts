@@ -9,6 +9,11 @@ export interface IUserDocument extends Document {
     roles: string[];
     createdAt: Date;
     updatedAt: Date;
+    coins?: number;
+    rankingPoints?: number;
+    ownedTitles?: string[];
+    equippedTitle?: string | null;
+    completedChallenges?: number[];
 }
 
 const UserSchema = new Schema<IUserDocument>(
@@ -46,7 +51,12 @@ const UserSchema = new Schema<IUserDocument>(
             required: [true, 'Roles são obrigatórias'],
             default: ['USER'],
             enum: ['USER', 'ADMIN', 'MOD']
-        }
+        },
+        coins: { type: Number, default: 0 },
+        rankingPoints: { type: Number, default: 0 },
+        ownedTitles: { type: [String], default: [] },
+        equippedTitle: { type: String, default: null },
+        completedChallenges: { type: [Number], default: [] }
     },
     {
         timestamps: true,

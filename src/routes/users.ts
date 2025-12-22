@@ -15,12 +15,13 @@ route.post(
     validate(createUserValidation),
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { username, email, password } = req.body;
+            const { username, email, password, profileImageUrl } = req.body;
             
             const newUser = await createUserService({
                 username,
                 email,
-                password
+                password,
+                profileImageUrl 
             });
 
             return res.status(201).json({
@@ -32,6 +33,7 @@ route.post(
         }
     }
 );
+
 route.post('/users/login', validate(loginUserValidation), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
@@ -48,25 +50,5 @@ route.post('/users/login', validate(loginUserValidation), async (req: Request, r
         next(error);
     }
 });
-
-route.get(
-    '/users/me',
-    authMiddleware,
-    authorize(UserRole.USER, UserRole.ADMIN, UserRole.MOD),
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userId = (req as AuthRequest).user.userId;
-            
-            const userProfile = await getUserProfileService({ userId });
-            
-            return res.status(200).json({
-                message: "User profile retrieved successfully",
-                data: userProfile
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
-);
 
 export default route;
