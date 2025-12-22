@@ -16,7 +16,7 @@ route.post(
             const newUser = await createUserService({
                 username,
                 email,
-                password,
+                password
             });
 
             return res.status(201).json({
