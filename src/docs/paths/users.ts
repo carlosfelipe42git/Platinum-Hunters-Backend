@@ -184,7 +184,8 @@ export function registerUserPaths(registry: OpenAPIRegistry): void {
                                     profileImageUrl: z.string().optional(),
                                     roles: z.array(z.string()),
                                     createdAt: z.string().datetime(),
-                                    updatedAt: z.string().datetime()
+                                    updatedAt: z.string().datetime(),
+                                    equippedTitle: z.string().nullable()
                                 }),
                                 statistics: z.object({
                                     totalGamesInLibrary: z.number(),
@@ -209,7 +210,8 @@ export function registerUserPaths(registry: OpenAPIRegistry): void {
                                     profileImageUrl: "https://example.com/profile.jpg",
                                     roles: ["USER"],
                                     createdAt: "2025-01-01T10:00:00.000Z",
-                                    updatedAt: "2025-01-15T14:30:00.000Z"
+                                    updatedAt: "2025-01-15T14:30:00.000Z",
+                                    equippedTitle: "🌸 Explorador de Sakura 🌸"
                                 },
                                 statistics: {
                                     totalGamesInLibrary: 45,

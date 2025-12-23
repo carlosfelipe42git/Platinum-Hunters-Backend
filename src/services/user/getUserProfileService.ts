@@ -1,6 +1,7 @@
 import { UserModel } from "../../data/documents/userDocument.js";
 import { LibraryItemModel } from "../../data/documents/libraryItemDocument.js";
 import { CustomGameModel } from "../../data/documents/customGameDocument.js";
+import { UserRankingDataModel } from "../../data/documents/userRankingDataDocument.js";
 import { LibraryItemStatus } from "../../models/libraryItemStatus.js";
 import { HttpException } from "../../exceptions/httpException.js";
 
@@ -14,6 +15,8 @@ export const getUserProfileService = async ({ userId }: GetUserProfileInput) => 
   if (!user) {
     throw new HttpException('User not found', 404);
   }
+
+  const rankingData = await UserRankingDataModel.findOne({ userId });
 
   const libraryStats = await LibraryItemModel.aggregate([
     { $match: { userId } },
@@ -73,7 +76,8 @@ export const getUserProfileService = async ({ userId }: GetUserProfileInput) => 
       profileImageUrl: user.profileImageUrl,
       roles: user.roles,
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
+      equippedTitle: rankingData?.equippedTitle || null
     },
     statistics: {
       totalGamesInLibrary: stats.totalGames,
