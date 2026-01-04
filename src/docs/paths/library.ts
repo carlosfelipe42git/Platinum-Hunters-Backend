@@ -99,8 +99,10 @@ export function registerLibraryPaths(registry: OpenAPIRegistry): void {
                     LibraryItemStatus.PLAYING,
                     LibraryItemStatus.COMPLETED,
                     LibraryItemStatus.ABANDONED,
-                    LibraryItemStatus.WISHLIST
+                    LibraryItemStatus.WISHLIST,
+                    LibraryItemStatus.PLATINUM
                 ]).optional(),
+                name: z.string().optional(),
                 page: z.string().optional(),
                 limit: z.string().optional()
             })
@@ -150,7 +152,7 @@ export function registerLibraryPaths(registry: OpenAPIRegistry): void {
                                         _id: "673bd123abc456def789",
                                         userId: "temp-user-id",
                                         gameId: "3498",
-                                        status: "playing",
+                                        status: "Jogando",
                                         progress: 50,
                                         platinum: false,
                                         hoursPlayed: 25,
@@ -409,11 +411,19 @@ export function registerLibraryPaths(registry: OpenAPIRegistry): void {
     registry.registerPath({
         method: 'get',
         path: '/library/custom-games',
-        description: 'Get all custom games created by the user',
+        description: 'Get all custom games created by the user with filters by name and status',
         summary: 'Get custom games',
         tags: ['Library', 'Custom Games'],
         request: {
             query: z.object({
+                status: z.enum([
+                    LibraryItemStatus.PLAYING,
+                    LibraryItemStatus.COMPLETED,
+                    LibraryItemStatus.ABANDONED,
+                    LibraryItemStatus.WISHLIST,
+                    LibraryItemStatus.PLATINUM
+                ]).optional(),
+                name: z.string().optional(),
                 page: z.string().optional(),
                 limit: z.string().optional()
             })
@@ -435,6 +445,7 @@ export function registerLibraryPaths(registry: OpenAPIRegistry): void {
                                     genres: z.array(z.string()),
                                     ano_de_lancamento: z.number().optional(),
                                     description: z.string().optional(),
+                                    status: z.string().nullable(),
                                     createdAt: z.string(),
                                     updatedAt: z.string()
                                 })),
@@ -443,7 +454,31 @@ export function registerLibraryPaths(registry: OpenAPIRegistry): void {
                                 limit: z.number(),
                                 totalPages: z.number()
                             })
-                        })
+                        }),
+                        example: {
+                            message: "Custom games retrieved successfully",
+                            data: {
+                                items: [
+                                    {
+                                        _id: "custom-game-123",
+                                        userId: "temp-user-id",
+                                        nome: "My Custom Game",
+                                        backgroundimage: "https://example.com/image.jpg",
+                                        plataformas: ["PC", "Custom Console"],
+                                        genres: ["RPG", "Adventure"],
+                                        ano_de_lancamento: 2023,
+                                        description: "A game I'm developing",
+                                        status: "Jogando",
+                                        createdAt: "2025-11-11T10:30:00.000Z",
+                                        updatedAt: "2025-11-11T15:45:00.000Z"
+                                    }
+                                ],
+                                total: 1,
+                                page: 1,
+                                limit: 20,
+                                totalPages: 1
+                            }
+                        }
                     }
                 }
             }

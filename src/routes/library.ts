@@ -58,11 +58,12 @@ route.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = (req as AuthRequest).user.userId;
-      const { status, page, limit } = req.query;
+      const { status, name, page, limit } = req.query;
       
       const result = await getUserLibraryService({
         userId,
         status: status as LibraryItemStatus,
+        name: name as string,
         page: page ? parseInt(page as string) : undefined,
         limit: limit ? parseInt(limit as string) : undefined
       });
@@ -156,10 +157,12 @@ route.get(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = (req as AuthRequest).user.userId;
-      const { page, limit } = req.query;
+      const { status, name, page, limit } = req.query;
       
       const result = await getCustomGamesService({
         userId,
+        status: status as LibraryItemStatus,
+        name: name as string,
         page: page ? parseInt(page as string) : undefined,
         limit: limit ? parseInt(limit as string) : undefined
       });

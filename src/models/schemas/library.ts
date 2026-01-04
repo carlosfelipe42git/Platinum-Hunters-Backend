@@ -25,6 +25,7 @@ export const getLibraryValidation = z.object({
   params: z.object({}),
   query: z.object({
     status: statusEnum.optional(),
+    name: z.string().max(100, 'Name filter must be less than 100 characters').optional(),
     page: z.string().regex(/^\d+$/).optional(),
     limit: z.string().regex(/^\d+$/).optional()
   }),

@@ -1,4 +1,13 @@
 import { z } from 'zod';
+import { LibraryItemStatus } from '../libraryItemStatus.js';
+
+const statusEnum = z.enum([
+  LibraryItemStatus.PLAYING,
+  LibraryItemStatus.COMPLETED,
+  LibraryItemStatus.PLATINUM,
+  LibraryItemStatus.ABANDONED,
+  LibraryItemStatus.WISHLIST
+]);
 
 export const createCustomGameValidation = z.object({
   body: z.object({
@@ -16,6 +25,8 @@ export const createCustomGameValidation = z.object({
 export const getCustomGamesValidation = z.object({
   params: z.object({}),
   query: z.object({
+    status: statusEnum.optional(),
+    name: z.string().max(100, 'Name filter must be less than 100 characters').optional(),
     page: z.string().regex(/^\d+$/).optional().refine(
       (val) => !val || parseInt(val) >= 1,
       { message: 'Page must be at least 1' }
